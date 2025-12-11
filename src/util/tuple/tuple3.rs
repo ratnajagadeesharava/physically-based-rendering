@@ -53,7 +53,7 @@ where
     }
 }
 
-impl<T> Mul for Tuple3<T>
+impl<T> Mul<Tuple3<T>> for Tuple3<T>
 where
     T: Mul<Output = T>,
 {
@@ -63,6 +63,20 @@ where
             x: self.x * rhs.x,
             y: self.y * rhs.y,
             z: self.z * rhs.z,
+        }
+    }
+}
+
+impl<T> Mul<T> for Tuple3<T>
+where
+    T: Mul<Output = T> + Copy,
+{
+    type Output = Self;
+    fn mul(self, rhs: T) -> Self::Output {
+        Self {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
         }
     }
 }
@@ -110,4 +124,12 @@ fn check_dot() {
     let tup2 = Tuple3::new(2, 3, 4);
     let m = tup1.dot(&tup2);
     assert_eq!(16, m);
+}
+
+#[test]
+fn check_scaler_mul() {
+    let mut tup1 = Tuple3::new(1, 2, 4);
+    let result = Tuple3::new(4, 8, 16);
+    tup1 = tup1 * 4;
+    assert_eq!(tup1, result);
 }
