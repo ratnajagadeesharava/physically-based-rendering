@@ -1,4 +1,5 @@
-use std::ops::{Add, Mul, Sub};
+use std::{f64::consts::SQRT_2, ops::{Add, Mul, Sub}};
+use num_traits::Float;
 #[derive(Debug)]
 pub struct Tuple2<T> {
     pub x: T,
@@ -9,13 +10,21 @@ impl<T> Tuple2<T> {
     pub fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
+
+
 }
 
-
+impl<T> Tuple2<T> where T:Float{
+    pub fn Length(&self)->T{
+        let x = self.x*self.x + self.y*self.y;
+        x.sqrt()
+    }
+}
 impl<T> Tuple2<T> where T:Add<Output=T>+Mul<Output=T>+Copy{
     pub fn dot(&self,other:&Self)->T{
         self.x*other.x+self.y*other.y
     }
+
 }
 impl<T> PartialEq for Tuple2<T> where T:PartialEq{
     fn eq(&self, other: &Self) -> bool {
@@ -51,6 +60,8 @@ impl<T> Mul for Tuple2<T> where T:Mul<Output=T>+Copy{
     }
 }
 
+type Vector2i = Tuple2<i32>;
+type Vector2f = Tuple2<f32>;
 
 #[test]
 fn test_tuple2_dot() {
