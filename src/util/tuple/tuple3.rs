@@ -1,4 +1,4 @@
-use std::ops::{Add, Index, Mul};
+use std::ops::{Add, Index, Mul, Sub};
 #[derive(Debug)]
 pub struct Tuple3<T> {
     pub x: T,
@@ -39,6 +39,33 @@ impl<T: Copy> Index<usize> for Tuple3<T> {
         }
     }
 }
+impl<T> Sub for Tuple3<T>
+where
+    T: Sub<Output = T>,
+{
+    type Output = Self;
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl<T> Mul for Tuple3<T>
+where
+    T: Mul<Output = T>,
+{
+    type Output = Self;
+    fn mul(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z,
+        }
+    }
+}
 impl<T> Add for Tuple3<T>
 where
     T: Add<Output = T>,
@@ -61,7 +88,22 @@ fn add_tupple_3() {
     let result = Tuple3::new(3, 5, 8);
     assert_eq!(result, tup1);
 }
-
+#[test]
+fn mul_tupple_3() {
+    let mut tup1 = Tuple3::new(1, 2, 4);
+    let mut tup2 = Tuple3::new(2, 3, 4);
+    tup1 = tup2 * tup1;
+    let result = Tuple3::new(2, 6, 16);
+    assert_eq!(result, tup1);
+}
+#[test]
+fn sub_tupple_3() {
+    let mut tup1 = Tuple3::new(1, 2, 4);
+    let mut tup2 = Tuple3::new(2, 3, 4);
+    tup1 = tup1 - tup2;
+    let result = Tuple3::new(-1, -1, 0);
+    assert_eq!(result, tup1);
+}
 #[test]
 fn check_dot() {
     let tup1 = Tuple3::new(1, 2, 4);
