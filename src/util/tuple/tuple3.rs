@@ -1,4 +1,5 @@
 use std::ops::{Add, Index, Mul};
+#[derive(Debug)]
 pub struct Tuple3<T> {
     pub x: T,
     pub y: T,
@@ -19,7 +20,14 @@ where
         self.x * other.x + self.y * other.y + self.z + other.z
     }
 }
-
+impl<T> PartialEq for Tuple3<T>
+where
+    T: PartialEq,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.x == other.x && self.y == other.y && self.z == other.z
+    }
+}
 impl<T: Copy> Index<usize> for Tuple3<T> {
     type Output = T;
     fn index(&self, i: usize) -> &Self::Output {
@@ -43,4 +51,21 @@ where
             z: self.z + other.z,
         }
     }
+}
+
+#[test]
+fn add_tupple_3() {
+    let mut tup1 = Tuple3::new(1, 2, 4);
+    let mut tup2 = Tuple3::new(2, 3, 4);
+    tup1 = tup2 + tup1;
+    let result = Tuple3::new(3, 5, 8);
+    assert_eq!(result, tup1);
+}
+
+#[test]
+fn check_dot() {
+    let tup1 = Tuple3::new(1, 2, 4);
+    let tup2 = Tuple3::new(2, 3, 4);
+    let m = tup1.dot(&tup2);
+    assert_eq!(16, m);
 }
