@@ -1,5 +1,8 @@
-use std::{f64::consts::SQRT_2, ops::{Add, Mul, Sub}};
 use num_traits::Float;
+use std::{
+    f64::consts::SQRT_2,
+    ops::{Add, Mul, Sub},
+};
 #[derive(Debug)]
 pub struct Tuple2<T> {
     pub x: T,
@@ -10,28 +13,43 @@ impl<T> Tuple2<T> {
     pub fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
-
-
 }
 
-impl<T> Tuple2<T> where T:Float{
-    pub fn Length(&self)->T{
-        let x = self.x*self.x + self.y*self.y;
+impl<T> Tuple2<T>
+where
+    T: Float,
+{
+    pub fn length(&self) -> T {
+        let x = self.x * self.x + self.y * self.y;
         x.sqrt()
     }
 }
-impl<T> Tuple2<T> where T:Add<Output=T>+Mul<Output=T>+Copy{
-    pub fn dot(&self,other:&Self)->T{
-        self.x*other.x+self.y*other.y
+impl<T> Tuple2<T>
+where
+    T: Add<Output = T> + Mul<Output = T> + Copy,
+{
+    pub fn dot(&self, other: &Self) -> T {
+        self.x * other.x + self.y * other.y
     }
-
+    pub fn from(tuple: &Tuple2<T>) -> Self {
+        Self {
+            x: tuple.x,
+            y: tuple.y,
+        }
+    }
 }
-impl<T> PartialEq for Tuple2<T> where T:PartialEq{
+impl<T> PartialEq for Tuple2<T>
+where
+    T: PartialEq,
+{
     fn eq(&self, other: &Self) -> bool {
         self.x == other.x && self.y == other.y
     }
 }
-impl <T> Add for Tuple2<T> where T:Add<Output=T>{
+impl<T> Add for Tuple2<T>
+where
+    T: Add<Output = T>,
+{
     type Output = Self;
     fn add(self, other: Self) -> Self {
         Self {
@@ -40,7 +58,10 @@ impl <T> Add for Tuple2<T> where T:Add<Output=T>{
         }
     }
 }
-impl<T> Sub for Tuple2<T> where T:Sub<Output=T>{
+impl<T> Sub for Tuple2<T>
+where
+    T: Sub<Output = T>,
+{
     type Output = Self;
     fn sub(self, other: Self) -> Self {
         Self {
@@ -50,7 +71,10 @@ impl<T> Sub for Tuple2<T> where T:Sub<Output=T>{
     }
 }
 
-impl<T> Mul for Tuple2<T> where T:Mul<Output=T>+Copy{
+impl<T> Mul for Tuple2<T>
+where
+    T: Mul<Output = T> + Copy,
+{
     type Output = Self;
     fn mul(self, other: Self) -> Self {
         Self {

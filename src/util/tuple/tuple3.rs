@@ -1,6 +1,5 @@
-use std::ops::{Add, Index, Mul, Sub};
-
 use num_traits::Float;
+use std::ops::{Add, Index, Mul, Sub};
 
 /// A generic 3-dimensional tuple structure.
 ///
@@ -31,7 +30,6 @@ impl<T> Tuple3<T> {
         Self { x, y, z }
     }
 }
-
 impl<T> Tuple3<T>
 where
     T: Add<Output = T> + Mul<Output = T> + Copy,
@@ -49,10 +47,49 @@ where
         self.x * other.x + self.y * other.y + self.z + other.z
     }
 }
-impl<T> Tuple3<T> where T :Float{
-    pub fn length(&self)->T{
-        let x = self.x*self.x + self.y*self.y + self.z*self.z;
+impl<T> Tuple3<T>
+where
+    T: Copy,
+{
+    pub fn from(tuple: &Tuple3<T>) -> Self {
+        Self {
+            x: tuple.x,
+            y: tuple.y,
+            z: tuple.z,
+        }
+    }
+}
+impl<T> Tuple3<T>
+where
+    T: Float,
+{
+    pub fn length(&self) -> T {
+        let x = self.x * self.x + self.y * self.y + self.z * self.z;
         x.sqrt()
+    }
+
+    pub fn normalize(&self) -> Self {
+        let len = self.length();
+        Self {
+            x: self.x / len,
+            y: self.y / len,
+            z: self.z / len,
+        }
+    }
+
+    pub fn cross(&self, other: &Self) -> Self {
+        Self {
+            x: self.y * other.z - self.z * other.y,
+            y: self.z * other.x - self.x * other.z,
+            z: self.x * other.y - self.y * other.x,
+        }
+    }
+    pub fn angle_between(v1: &Tuple3<T>, v2: &Tuple3<T>) -> T {
+        let dot_product = v1.dot(v2);
+        let lengths_product = v1.length() * v2.length();
+        let cos_theta = dot_product / lengths_product;
+        let angle = cos_theta.acos();
+        angle
     }
 }
 /// Implementation of equality comparison for `Tuple3`.
@@ -105,7 +142,7 @@ where
 ///
 /// Multiplies each component of the left-hand side tuple with the
 /// corresponding component of the right-hand side tuple.
-impl<T> Mul for Tuple3<T>
+impl<T> Mul<Tuple3<T>> for Tuple3<T>
 where
     T: Mul<Output = T>,
 {
@@ -115,6 +152,20 @@ where
             x: self.x * rhs.x,
             y: self.y * rhs.y,
             z: self.z * rhs.z,
+        }
+    }
+}
+
+impl<T> Mul<T> for Tuple3<T>
+where
+    T: Mul<Output = T> + Copy,
+{
+    type Output = Self;
+    fn mul(self, rhs: T) -> Self::Output {
+        Self {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
         }
     }
 }
@@ -141,7 +192,7 @@ where
 #[test]
 fn add_tupple_3() {
     let mut tup1 = Tuple3::new(1, 2, 4);
-    let  tup2 = Tuple3::new(2, 3, 4);
+    let tup2 = Tuple3::new(2, 3, 4);
     tup1 = tup2 + tup1;
     let result = Tuple3::new(3, 5, 8);
     assert_eq!(result, tup1);
@@ -159,7 +210,7 @@ fn add_tupple_3() {
 #[test]
 fn mul_tupple_3() {
     let mut tup1 = Tuple3::new(1, 2, 4);
-    let  tup2 = Tuple3::new(2, 3, 4);
+    let tup2 = Tuple3::new(2, 3, 4);
     tup1 = tup2 * tup1;
     let result = Tuple3::new(2, 6, 16);
     assert_eq!(result, tup1);
@@ -169,12 +220,11 @@ fn mul_tupple_3() {
 #[test]
 fn sub_tupple_3() {
     let mut tup1 = Tuple3::new(1, 2, 4);
-    let  tup2 = Tuple3::new(2, 3, 4);
+    let tup2 = Tuple3::new(2, 3, 4);
     tup1 = tup1 - tup2;
     let result = Tuple3::new(-1, -1, 0);
     assert_eq!(result, tup1);
 }
-
 
 /// Test for dot product calculation.
 /// Verifies that the dot product of two tuples is computed correctly.
@@ -186,4 +236,12 @@ fn check_dot() {
     let tup2 = Tuple3::new(2, 3, 4);
     let m = tup1.dot(&tup2);
     assert_eq!(16, m);
+}
+
+#[test]
+fn check_scaler_mul() {
+    let mut tup1 = Tuple3::new(1, 2, 4);
+    let result = Tuple3::new(4, 8, 16);
+    tup1 = tup1 * 4;
+    assert_eq!(tup1, result);
 }
