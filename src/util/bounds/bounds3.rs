@@ -1,4 +1,4 @@
-type Float = f32;
+use crate::util::Float;
 use crate::util::vector::{Point3, Vector3};
 pub struct Bounds3 {
     pMin: Point3,
