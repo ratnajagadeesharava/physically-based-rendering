@@ -17,6 +17,15 @@ impl From<(Float, Float, Float)> for Vector3 {
 }
 
 impl Vector3 {
+    pub fn get_x(&self) -> Float {
+        self.x
+    }
+    pub fn get_y(&self) -> Float {
+        self.y
+    }
+    pub fn get_z(&self) -> Float {
+        self.z
+    }
     pub fn new(x: Float, y: Float, z: Float) -> Self {
         Self { x: x, y: y, z: z }
     }
@@ -64,6 +73,15 @@ impl Vector3 {
 
 // Operators Overloading
 //
+impl Clone for Vector3 {
+    fn clone(&self) -> Self {
+        Self {
+            x: self.x,
+            y: self.y,
+            z: self.z,
+        }
+    }
+}
 impl Index<usize> for Vector3 {
     type Output = Float;
     fn index(&self, i: usize) -> &Self::Output {
