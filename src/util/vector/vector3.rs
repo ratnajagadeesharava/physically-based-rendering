@@ -1,5 +1,6 @@
 use std::ops::{Add, Index, Mul, Sub};
-type Float = f32;
+use crate::util::Float;
+
 #[derive(Debug)]
 pub struct Vector3 {
     x: Float,

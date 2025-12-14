@@ -1,6 +1,5 @@
+use crate::util::Float;
 use crate::util::vector::{Point3, Vector3};
-
-type Float = f32;
 
 pub struct Ray {
     origin: Point3,
