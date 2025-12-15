@@ -10,8 +10,7 @@ fn spherical_direction(sin_theta:Float,cos_theta:Float,phi:Float)->Vector3{
     )
 }
 fn spherical_triangle_area(a:Vector3,b:Vector3,c:Vector3)->Float{
-    let numerator = a.dot(&b.cross(&c));
-    let denominator = 1.0+ a.dot(&b) +a.dot(&c)+b.dot(&c);
+    let numerator = a.dot(&b.cross(&c));    let denominator = 1.0+ a.dot(&b) +a.dot(&c)+b.dot(&c);
     let val = numerator/denominator;
     2.0*val.atan()
 }
