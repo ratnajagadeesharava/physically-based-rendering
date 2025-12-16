@@ -4,7 +4,7 @@ use std::{convert::identity, vec};
 use crate::util::types::{Float, Int};
 #[derive(Debug)]
 pub struct SquareMatrix<const N: usize> {
-    matrix: [[Float; N]; N],
+    pub matrix: [[Float; N]; N],
 }
 
 impl<const N: usize> SquareMatrix<N> {
