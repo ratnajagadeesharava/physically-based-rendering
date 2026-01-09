@@ -5,6 +5,12 @@ edition = "2024"
 
 [dependencies]
 num-traits = "0.2.19"
+# Use compatible versions - glutin-winit 0.3 works with winit 0.28 and glutin 0.30
+glutin = "0.30"
+glutin-winit = "0.3"
+winit = "0.28"
+gl = "0.14"
+raw-window-handle = "0.5"
 
 [dependencies.windows]
 version = "0.62.2"

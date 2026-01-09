@@ -3,4 +3,4 @@ pub mod helpers;
 pub mod renderer;
 
 pub use renderer::run;
-pub use renderer::DX12Renderer;
+pub use renderer::GLRenderer;
